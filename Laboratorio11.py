@@ -5,7 +5,8 @@ import plotly.express as px
 # Aplicación realizada en clase
 
 # Configuracion pagina
-st.set_page_config(layout='wide')
+st.set_page_config(layout='wide', initial_sidebar_state="collapsed")
+st.sidebar.header("Filtros")
 st.title('KORA - clientes')
 
 # Carga de informacion

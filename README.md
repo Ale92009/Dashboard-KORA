@@ -1,4 +1,4 @@
-DATA1002 - Laboratorio 11: Dashboards
+**DATA1002 - Laboratorio 11: Dashboards**
 
 Tablero construido por el equipo de KORA para conocer a sus clientes y planear una campaña de recompra: 
 - ¿Cuántos compran?
