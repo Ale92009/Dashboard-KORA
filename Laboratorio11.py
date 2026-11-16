@@ -43,10 +43,10 @@ canales = st.sidebar.multiselect('Canal', df_final['canal_adquisicion'].unique()
                                  default=df_final['canal_adquisicion'].unique())
 filtrado_canales = df_final['canal_adquisicion'].isin(canales)
 
-segmento = st.sidebar.multiselect('Segmento', df_final['Segmento'].unique(), 
+segmento_f = st.sidebar.multiselect('Segmento', df_final['Segmento'].unique(), 
                                   default=df_final['Segmento'].unique())
 
-filtrado_segmento = df_final['Segmento'].isin(segmento)
+filtrado_segmento = df_final['Segmento'].isin(segmento_f)
 
 filtrado = df_final[(filtrado_ciudades) & (filtrado_segmento) & (filtrado_canales)]
 
@@ -74,7 +74,7 @@ d.metric('Recompra', f'{recompra:.1%}', border=True)
 
 #Punto 1:
 
-st.subheader("""¿Por qué la tasa de recompra por sí sola no basta para elegir el canla más adecuado?
+st.subheader("""¿Por qué la tasa de recompra por sí sola no basta para elegir el canal más adecuado?
              
 La tasa de recompra mide el porcentaje de compradores de un canal que han realizado dos o más pedidos, y se calcula dividiendo 
 el número de clientes con dos o más pedidos entre el número total de clientes con al menos una compra, multiplicando el resultado por 100.
@@ -178,14 +178,14 @@ cada grupo.""")
 #Punto 4: Comparacion entre canales los compradores con una sola compra
 
 comparacion_canales_una_compra = una_compra.groupby('canal_adquisicion', as_index=False).agg(
-    total_pedidos=('n_pedidos', 'count')).sort_values(by='total_pedidos', ascending=False)
+    total_clientes=('n_pedidos', 'count')).sort_values(by='total_clientes', ascending=False)
 fig_comparacion_canales_una_compra = px.bar(data_frame=comparacion_canales_una_compra, 
                                             x='canal_adquisicion',
-                                            y='total_pedidos', 
-                                            text='total_pedidos')
+                                            y='total_clientes', 
+                                            text='total_clientes')
 fig_comparacion_canales_una_compra.update_layout(title='Número de clientes con una sola compra por canal', 
                                                  xaxis_title='Canales de adquisicion',
-                                                 yaxis_title='Total pedidos')
+                                                 yaxis_title='Total de clientes')
 fig_comparacion_canales_una_compra.update_traces(marker_color=['#008C41', '#00FF7B', '#18A85E', '#17E379'] )
 
 with st.container(border=True):
@@ -196,7 +196,22 @@ st.subheader("""¿El canal con mayor volumen coincide necesariamente con el de m
 En el caso de KORA, el canal con mayor volumen de clientes con exactamente una compra coincide con 
 el de menor tasa de recompra. Redes sociales tiene 147 clientes que han realizado una sola compra y presenta 
 una tasa de recompra del 59,6 %, la más baja entre los cuatro canales analizados. 
-Por otro lado, orgánico tiene solamente 48 clientes con una compra y presenta la tasa de recompra más alta, con un 75 %.""")
+Por otro lado, orgánico tiene solamente 48 clientes con una compra y presenta la tasa de recompra más alta, con un 75.9%.""")
 
 #Punto 6: Recomendación canal
+
+st.subheader("""Recomendación y limitaciones de los datos: 
+             
+Se recomendaría iniciar el piloto en Redes Sociales. Este canal 364 compradores en total, de los cuales 147 clientes 
+tienen una sola compra. Además, este canal cuenta con la tasa de Recompra más baja con un 59.6%, frente al 75.9% 
+del canal Orgánico, que tiene 48 clientes de 196 en total. Por este motivo, Redes Sociales representa el 
+canal con mayor margen de mejora. 
+
+Una limitación es que los datos no permiten identificar las razones por las que los clientes no
+han vuelto a comprar. 
+             
+Una métrica recomendada para evaluar al piloto podría ser la tasa de conversión a segunda compra, 
+calculando el porcentaje de clientes participantes en la campaña que realizan una segunda compra durante el periodo
+de evaluación. 
+             """)
 
